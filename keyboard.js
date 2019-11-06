@@ -17,9 +17,13 @@ document.addEventListener('keyup', function(event) {
             if(event.key.toLowerCase() === "backspace"){key = event.key.toLowerCase()}
             else{key = typeOfKey[event.code]}
         }
-    }else{key = event.key.toLowerCase()}
+    }else{
+        if(event.key.toLowerCase() === " "){
+            key = event.code.toLowerCase();
+        }else{key = event.key.toLowerCase();}
+    }
     tapKey = document.getElementsByClassName(key)[0]
-    // console.log(event.code, event.key, key, tapKey)
+    console.log(event.code, event.key, key, tapKey)
     tapKey.click()
 });
 
