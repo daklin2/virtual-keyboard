@@ -1,8 +1,23 @@
+let typeOfKey = {
+    KeyQ: "й", Keyw: "ц", KeyE: "у", KeyR: "к", KeyT: "е", KeyY: "н", KeyU: "г", KeyI: "ш", KeyO: "щ", KeyP: "з",
+    BracketLeft: "х", BracketRight: "ъ",
+    KeyA: "ф", KeyS: "ы", KeyD: "в", KeyF: "а", KeyG: "п", KeyH: "р", KeyJ: "о", KeyK: "л", KeyL: "д",
+    Semicolon: "ж", Quote: "э", Backslash: "ё",
+    KeyZ: "я", KeyX: "ч", KeyC: "с", KeyV: "м", KeyB: "и", KeyN: "т", KeyM: "ь",
+    Comma: "б", Period: "ю", 
+}
+
 document.addEventListener('keyup', function(event) {
-    key = event.key.replace('Key', '').toLowerCase()
-    if(key === " "){key = event.code.replace('Key', '').toLowerCase()}
+    code = event.code.substring(0, 3).toLowerCase()
+    console.log(code)
+    if(code === "key" || code === "bra" || code === "sem" || code === "quo" || code === "bac" || code === "com" || code === "per"){
+        if(keyboard.properties.language == "eng"){
+            if(code === "com" || code === "per"){key = event.key.toLowerCase()}
+            else{key = event.code.replace('Key', '').toLowerCase()}
+        }else{key = typeOfKey[event.code]}
+    }else{key = event.key.toLowerCase()}
     tapKey = document.getElementsByClassName(key)[0]
-    console.log(event.code, event.key, key, tapKey)
+    // console.log(event.code, event.key, key, tapKey)
     tapKey.click()
 });
 
@@ -20,7 +35,8 @@ const keyboard = {
 
     properties: {
         value: "",
-        capsLock: false
+        capsLock: false,
+        language: "eng"
     },
 
     init(){
@@ -37,34 +53,40 @@ const keyboard = {
         document.body.appendChild(this.elements.main);
 
         document.querySelectorAll(".use-keyboard-input").forEach(element => {
-            element.addEventListener("focus", () => {
-                this.keyClick(element.value, currentValue => {
-                    element.value = currentValue;
-                });
+            this.keyClick(element.value, currentValue => {
+                element.value = currentValue;
             });
         });
     },
 
     _createKeys() {
-        const fragment = document.createDocumentFragment();
         const keyLayout_rus = [
             "ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
-            "tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "del",
+            "tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", '.',
             "capslock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
-            "shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "/",
-            "ctrl", "alt", "space"
+            "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ",", "?","!", "/", 
+            "alt", "space"
         ]
-        // const keyLayout = [
-        //     "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
-        //     "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-        //     "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
-        //     "done", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
-        //     "space"
-        // ];
+        const keyLayout_eng = [
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
+            "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", ".",
+            "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
+            "done", "z", "x", "c", "v", "b", "n", "m", ",", "?", "!", "/",
+            "alt", "space",
+        ];
 
-        keyLayout_rus.forEach(key => {
+        const fragment = document.createDocumentFragment();
+
+        if(this.properties.language === "rus"){
+            keyLayout = keyLayout_rus;
+        }else{
+            keyLayout = keyLayout_eng;
+        }
+        
+
+        keyLayout.forEach(key => {
             const keyElement = document.createElement("button")
-            const insertLineBreak = ["backspace", "del", "enter", "/"].indexOf(key) !== -1
+            const insertLineBreak = ["backspace", ".", "enter", "/"].indexOf(key) !== -1
 
             keyElement.setAttribute("type", "button")
             keyElement.classList.add("keyboard__key", key)
@@ -126,6 +148,16 @@ const keyboard = {
                         this._animate(keyElement)
                     });
                     break
+
+                case "alt":
+                    keyElement.textContent = key.toLowerCase();
+                    keyElement.addEventListener("click", () => {
+                        this._toggleLanguage()
+                        this._triggerEvent("oninput")
+                        this._animate(keyElement)
+                    });
+                    break
+
                 default:
                     keyElement.textContent = key.toLowerCase();
 
@@ -162,13 +194,21 @@ const keyboard = {
         }
     },
 
+    _toggleLanguage() {
+        if(this.properties.language === "rus"){this.properties.language = "eng"}
+        else{this.properties.language = "rus"}
+
+        document.getElementsByClassName("keyboard__keys")[0].innerHTML = "";
+        this.elements.keysContainer.appendChild(this._createKeys());
+    },
+
     _triggerEvent(handlerName) {
         if (typeof this.eventHandlers[handlerName] == "function") {
             this.eventHandlers[handlerName](this.properties.value);
         }
     },
 
-    _animate(tapKey){
+    _animate(tapKey) {
         tapKey.classList.add("active")
         setTimeout(function() {
           tapKey.classList.remove("active")
