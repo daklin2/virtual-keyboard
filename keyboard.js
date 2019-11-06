@@ -9,12 +9,14 @@ let typeOfKey = {
 
 document.addEventListener('keyup', function(event) {
     code = event.code.substring(0, 3).toLowerCase()
-    console.log(code)
     if(code === "key" || code === "bra" || code === "sem" || code === "quo" || code === "bac" || code === "com" || code === "per"){
         if(keyboard.properties.language == "eng"){
             if(code === "com" || code === "per"){key = event.key.toLowerCase()}
             else{key = event.code.replace('Key', '').toLowerCase()}
-        }else{key = typeOfKey[event.code]}
+        }else{
+            if(event.key.toLowerCase() === "backspace"){key = event.key.toLowerCase()}
+            else{key = typeOfKey[event.code]}
+        }
     }else{key = event.key.toLowerCase()}
     tapKey = document.getElementsByClassName(key)[0]
     // console.log(event.code, event.key, key, tapKey)
@@ -69,8 +71,8 @@ const keyboard = {
         ]
         const keyLayout_eng = [
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
-            "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", ".",
-            "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
+            "tab","q", "w", "e", "r", "t", "y", "u", "i", "o", "p", ".",
+            "capslock", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
             "done", "z", "x", "c", "v", "b", "n", "m", ",", "?", "!", "/",
             "alt", "space",
         ];
