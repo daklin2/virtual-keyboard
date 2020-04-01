@@ -1,4 +1,4 @@
-const KEYS = [
+const keyboardKeys = [
   [
     ['', 'Backquote', 'ё', 'Ё', '`', '~'],
     ['', 'Digit1', '1', '!', '1', '!'],
@@ -75,4 +75,4 @@ const KEYS = [
   ],
 ];
 
-export default KEYS;
+export default keyboardKeys;
