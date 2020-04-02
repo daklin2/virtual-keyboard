@@ -258,6 +258,11 @@ class KeyBoard {
       const targetBtnName = targetSpan.className.split(' ')[0];
       const specialBtn = targetBtn.classList[1];
 
+      targetBtn.classList.add('active');
+      setTimeout(() => {
+        targetBtn.classList.remove('active');
+      }, 100);
+
       keyboardKeys.forEach((row) => {
         row.forEach((keyValue) => {
           if (keyValue[1] === targetBtnName && (specialBtn === undefined || specialBtn === 'space')) {
