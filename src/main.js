@@ -139,6 +139,7 @@ class KeyBoard {
     }
   }
 
+  // switch language
   langChange() {
     if (this.lang === 'en') this.lang = 'ru';
     else this.lang = 'en';
@@ -178,7 +179,6 @@ class KeyBoard {
         if (
           keyValue[1] === event.code
           && event.key !== 'Backspace'
-          && event.key !== 'Tab'
           && event.key !== 'Delete'
           && event.key !== 'CapsLock'
           && event.key !== 'Control'
@@ -192,29 +192,25 @@ class KeyBoard {
           && event.key !== 'ArrowDown'
         ) {
           event.preventDefault();
-          const [, , ruLow, ruUp, enLow, enUp] = keyValue;
-          switch (this.lang) {
-            case 'en':
-              if (this.isShiftPress || this.isCapsLockPress) this.symbol = enUp;
-              else this.symbol = enLow;
-              break;
-            case 'ru':
-              if (this.isShiftPress || this.isCapsLockPress) this.symbol = ruUp;
-              else this.symbol = ruLow;
-              break;
-            default:
-              break;
+          if (event.key === 'Tab') this.symbol = '  ';
+          else {
+            const [, , ruLow, ruUp, enLow, enUp] = keyValue;
+            switch (this.lang) {
+              case 'en':
+                if (this.isShiftPress || this.isCapsLockPress) this.symbol = enUp;
+                else this.symbol = enLow;
+                break;
+              case 'ru':
+                if (this.isShiftPress || this.isCapsLockPress) this.symbol = ruUp;
+                else this.symbol = ruLow;
+                break;
+              default:
+                break;
+            }
           }
         }
       });
     });
-
-    this.textArea.setRangeText(
-      this.symbol,
-      this.textArea.selectionStart,
-      this.textArea.selectionEnd,
-      'end',
-    );
 
     // show what we are click to button
     this.keyboard.querySelectorAll('.row').forEach((row) => {
@@ -228,6 +224,14 @@ class KeyBoard {
         }
       });
     });
+
+    // print symbol to textarea
+    this.textArea.setRangeText(
+      this.symbol,
+      this.textArea.selectionStart,
+      this.textArea.selectionEnd,
+      'end',
+    );
   }
 
   // when key press up use that
@@ -324,6 +328,7 @@ class KeyBoard {
         }
       }
 
+      // print symbol to textarea
       this.textArea.setRangeText(
         this.symbol,
         this.textArea.selectionStart,
@@ -338,6 +343,7 @@ class KeyBoard {
 const keyBoard = new KeyBoard();
 keyBoard.init();
 
+
 const wrapper = document.querySelector('.wrapper');
 wrapper.addEventListener('click', (event) => {
   if (event.target.classList.contains('lang')) {
@@ -346,6 +352,7 @@ wrapper.addEventListener('click', (event) => {
     keyBoard.clickPrint(event);
   }
 });
+
 
 document.addEventListener('keydown', (event) => {
   keyBoard.keyDown(event);
