@@ -95,26 +95,22 @@ class KeyBoard {
     });
   }
 
-  regUp() {
-    this.isShiftPress = true;
-
-    document.querySelectorAll('.on').forEach((key) => {
-      key.children[0].classList.remove('show');
-      key.children[0].classList.add('hide');
-      key.children[1].classList.add('show');
-      key.children[1].classList.remove('hide');
-    });
-  }
-
-  regDown() {
-    this.isShiftPress = false;
-
-    document.querySelectorAll('.on').forEach((key) => {
-      key.children[0].classList.add('show');
-      key.children[0].classList.remove('hide');
-      key.children[1].classList.remove('show');
-      key.children[1].classList.add('hide');
-    });
+  changeRegister() {
+    if (this.isShiftPress || this.capsLock) {
+      document.querySelectorAll('.on').forEach((key) => {
+        key.children[0].classList.add('show');
+        key.children[0].classList.remove('hide');
+        key.children[1].classList.remove('show');
+        key.children[1].classList.add('hide');
+      });
+    } else {
+      document.querySelectorAll('.on').forEach((key) => {
+        key.children[0].classList.remove('show');
+        key.children[0].classList.add('hide');
+        key.children[1].classList.add('show');
+        key.children[1].classList.remove('hide');
+      });
+    }
   }
 
   langChange() {
@@ -137,7 +133,10 @@ class KeyBoard {
   }
 
   keyDown(event) {
-    if (event.shiftKey) this.regUp();
+    if (this.capsLock !== true && event.key === 'Shift') {
+      this.changeRegister();
+      this.isShiftPress = true;
+    }
 
     if (event.shiftKey && event.altKey) this.langChange();
 
@@ -166,10 +165,10 @@ class KeyBoard {
           const [, , ruLow, ruUp, enLow, enUp] = keyValue;
           switch (this.lang) {
             case 'en':
-              (this.isShiftPress) ? this.symbol = enUp : this.symbol = enLow;
+              (this.isShiftPress || this.capsLock) ? this.symbol = enUp : this.symbol = enLow;
               break;
             case 'ru':
-              (this.isShiftPress) ? this.symbol = ruUp : this.symbol = ruLow;
+              (this.isShiftPress || this.capsLock) ? this.symbol = ruUp : this.symbol = ruLow;
               break;
             default:
               break;
@@ -188,17 +187,16 @@ class KeyBoard {
     this.keyboard.querySelectorAll('.row').forEach((row) => {
       row.querySelectorAll('.key').forEach((key) => {
         if (event.code === key.children[0].classList[0]) {
-          if (event.key === 'CapsLock') {
+          if (!this.isShiftPress && event.key === 'CapsLock') {
             if (this.capsLock) {
+              this.changeRegister();
               this.capsLock = false;
-              key.classList.remove('active');
-              this.regDown();
-              this.isShiftPress = false;
+              // this.isShiftPress = false;
             } else {
+              this.changeRegister();
               this.capsLock = true;
-              key.classList.add('active');
-              this.regUp();
-              this.isShiftPress = true;
+              // this.isShiftPress = true;
+
             }
           } else {
             key.classList.add('active');
@@ -209,7 +207,10 @@ class KeyBoard {
   }
 
   keyUp(event) {
-    if (event.key === 'Shift') this.regDown();
+    if (this.capsLock !== true && event.key === 'Shift') {
+      this.changeRegister();
+      this.isShiftPress = false;
+    }
 
     this.keyboard.querySelectorAll('.row').forEach((row) => {
       row.querySelectorAll('.key').forEach((key) => {
