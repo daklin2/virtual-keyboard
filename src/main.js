@@ -41,6 +41,7 @@ class KeyBoard {
     document.body.append(wrapper);
 
     this.textArea.classList.add('keyboard__textarea');
+    this.textArea.innerHTML = 'Tested on macOs';
     wrapper.append(this.textArea);
 
     this.pageLangBtn.classList.add('keyboard__langBtn', 'lang');
@@ -337,7 +338,8 @@ class KeyBoard {
 const keyBoard = new KeyBoard();
 keyBoard.init();
 
-document.addEventListener('click', (event) => {
+const wrapper = document.querySelector('.wrapper');
+wrapper.addEventListener('click', (event) => {
   if (event.target.classList.contains('lang')) {
     keyBoard.langChange(event);
   } else {

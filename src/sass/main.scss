@@ -4,6 +4,9 @@ $transition: 0.3s;
   margin: 0;
   padding: 0;
   text-decoration: none;
+  box-shadow: none;
+  outline: none;
+  background-color: #fff;
 
   &:focus {
     outline: none;
@@ -19,13 +22,14 @@ $transition: 0.3s;
   width: (100% - 4%);
   height: 200px;
   padding: 2%;
-  box-shadow: 0px 3px 9px rgba(13, 16, 61, 0.4);
+  box-shadow: 0 3px 9px rgba(13, 16, 61, 0.4);
   resize: none;
   border: none;
+  font-size: 15px;
   transition: box-shadow $transition;
 
   &:hover {
-    box-shadow: 0px 3px 9px rgba(13, 16, 61, 0.9);
+    box-shadow: 0 3px 9px rgba(13, 16, 61, 0.9);
   }
   &:focus {
     transition: $transition;
@@ -39,7 +43,7 @@ $transition: 0.3s;
   margin: 10px auto;
   font-size: 15px;
   line-height: 30px;
-  color: rgba(17, 17, 17, 0.6);;
+  color: rgba(17, 17, 17, 0.6);
   text-align: center;
   box-shadow: 0 3px 9px rgba(13, 16, 61, 0.4);
   border-radius: 3px;
@@ -48,8 +52,7 @@ $transition: 0.3s;
   transition: $transition;
 
   &:hover {
-    //background-color: #7284ff;
-    box-shadow: 0px 3px 9px rgba(13, 16, 61, 0.9)
+    box-shadow: 0 3px 9px rgba(13, 16, 61, 0.9)
   }
 
   &:active {
@@ -85,7 +88,7 @@ $transition: 0.3s;
     }
 
     &:hover {
-      box-shadow: 0px 3px 9px rgba(13, 16, 61, 0.9)
+      box-shadow: 0 3px 9px rgba(13, 16, 61, 0.9)
     }
   }
 
