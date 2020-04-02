@@ -261,7 +261,7 @@ class KeyBoard {
       targetBtn.classList.add('active');
       setTimeout(() => {
         targetBtn.classList.remove('active');
-      }, 100);
+      }, 150);
 
       keyboardKeys.forEach((row) => {
         row.forEach((keyValue) => {
