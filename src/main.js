@@ -6,6 +6,7 @@ class KeyBoard {
     this.capsLock = false;
     this.isShiftPress = false;
 
+    this.symbol = '';
     this.keyboard = document.createElement('div');
     this.textArea = document.createElement('textarea');
     this.pageLangBtn = document.createElement('button');
@@ -32,7 +33,7 @@ class KeyBoard {
   }
 
   createKeys() {
-    keyboardKeys.forEach((keyboardRowValues, i) => {
+    keyboardKeys.forEach((keyboardRowValues) => {
       const keyboardRowContainer = document.createElement('div');
       keyboardRowContainer.classList.add('row');
       this.keyboard.append(keyboardRowContainer);
@@ -93,9 +94,121 @@ class KeyBoard {
       });
     });
   }
+
+  regUp() {
+    this.isShiftPress = true;
+
+    document.querySelectorAll('.on').forEach((key) => {
+      key.children[0].classList.remove('show');
+      key.children[0].classList.add('hide');
+      key.children[1].classList.add('show');
+      key.children[1].classList.remove('hide');
+    });
+  }
+
+  regDown() {
+    this.isShiftPress = false;
+
+    document.querySelectorAll('.on').forEach((key) => {
+      key.children[0].classList.add('show');
+      key.children[0].classList.remove('hide');
+      key.children[1].classList.remove('show');
+      key.children[1].classList.add('hide');
+    });
+  }
+
+  keyDown(event) {
+    if (event.shiftKey) this.regUp();
+
+    // if (event.shiftKey && event.altKey) this.langChang();
+
+    this.textArea.focus();
+    this.symbol = '';
+
+    keyboardKeys.forEach((keyboardRowValues) => {
+      keyboardRowValues.forEach((keyValue) => {
+        if (
+          keyValue[1] === event.code
+          && event.key !== 'Backspace'
+          && event.key !== 'Tab'
+          && event.key !== 'Delete'
+          && event.key !== 'CapsLock'
+          && event.key !== 'Control'
+          && event.key !== 'Meta'
+          && event.key !== 'Enter'
+          && event.key !== 'Alt'
+          && event.key !== 'Shift'
+          && event.key !== 'ArrowRight'
+          && event.key !== 'ArrowLeft'
+          && event.key !== 'ArrowUp'
+          && event.key !== 'ArrowDown'
+        ) {
+          event.preventDefault();
+          const [, , ruLow, ruUp, enLow, enUp] = keyValue;
+          switch (this.lang) {
+            case 'en':
+              (this.isShiftPress) ? this.symbol = enUp : this.symbol = enLow;
+              break;
+            case 'ru':
+              (this.isShiftPress) ? this.symbol = ruUp : this.symbol = ruLow;
+              break;
+            default:
+              break;
+          }
+        }
+      });
+    });
+
+    this.textArea.setRangeText(
+      this.symbol,
+      this.textArea.selectionStart,
+      this.textArea.selectionEnd,
+      'end',
+    );
+
+    this.keyboard.querySelectorAll('.row').forEach((row) => {
+      row.querySelectorAll('.key').forEach((key) => {
+        if (event.code === key.children[0].classList[0]) {
+          if (event.key === 'CapsLock') {
+            if (this.capsLock) {
+              this.capsLock = false;
+              key.classList.remove('active');
+              this.regDown();
+              this.isShiftPress = false;
+            } else {
+              this.capsLock = true;
+              key.classList.add('active');
+              this.regUp();
+              this.isShiftPress = true;
+            }
+          } else {
+            key.classList.add('active');
+          }
+        }
+      });
+    });
+  }
+
+  keyUp(event) {
+    if (event.key === 'Shift') this.regDown();
+
+    this.keyboard.querySelectorAll('.row').forEach((row) => {
+      row.querySelectorAll('.key').forEach((key) => {
+        if (event.code === key.children[0].classList[0] && event.key !== 'CapsLock') {
+          key.classList.remove('active');
+        }
+      });
+    });
+  }
 }
 
 const KEYBOARD = new KeyBoard();
 KEYBOARD.init();
 KEYBOARD.createKeys();
 
+document.addEventListener('keydown', (event) => {
+  KEYBOARD.keyDown(event);
+});
+document.addEventListener('keyup', (event) => {
+  KEYBOARD.keyUp(event);
+});
