@@ -76,8 +76,7 @@
 }
 .keyboard__container .backspace,
 .keyboard__container .capslock,
-.keyboard__container .shift-left,
-.keyboard__container .shift-right,
+.keyboard__container .shift,
 .keyboard__container .enter {
   width: 89px;
 }
@@ -90,8 +89,7 @@
 .keyboard__container .ctrl-right,
 .keyboard__container .del,
 .keyboard__container .enter,
-.keyboard__container .shift-left,
-.keyboard__container .shift-right,
+.keyboard__container .shift,
 .keyboard__container .tab,
 .keyboard__container .win {
   font-size: 15px;

@@ -85,8 +85,7 @@ $transition: 0.3s;
 
   .backspace,
   .capslock,
-  .shift-left,
-  .shift-right,
+  .shift,
   .enter {
     width: 89px;
   }
@@ -100,8 +99,7 @@ $transition: 0.3s;
   .ctrl-right,
   .del,
   .enter,
-  .shift-left,
-  .shift-right,
+  .shift,
   .tab,
   .win {
     font-size: 15px;
