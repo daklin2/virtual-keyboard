@@ -13,9 +13,9 @@ class KeyBoard {
   }
 
   init() {
-    // if (localStorage.getItem('lang') === null) {
-    //   localStorage.setItem('lang', this.lang);
-    // } else this.lang = localStorage.getItem('lang');
+    if (localStorage.getItem('lang') === null) {
+      localStorage.setItem('lang', this.lang);
+    } else this.lang = localStorage.getItem('lang');
 
     const wrapper = document.createElement('div');
     wrapper.classList.add('wrapper');
@@ -117,10 +117,29 @@ class KeyBoard {
     });
   }
 
+  langChange() {
+    (this.lang === 'en') ? this.lang = 'ru' : this.lang = 'en';
+    localStorage.setItem('lang', this.lang);
+
+    this.keyboard.querySelectorAll('.key').forEach((key) => {
+      if (key.children[0].classList.contains('on')) {
+        key.children[0].classList.remove('on');
+        key.children[0].classList.add('off');
+        key.children[1].classList.remove('off');
+        key.children[1].classList.add('on');
+      } else {
+        key.children[0].classList.remove('off');
+        key.children[0].classList.add('on');
+        key.children[1].classList.remove('on');
+        key.children[1].classList.add('off');
+      }
+    });
+  }
+
   keyDown(event) {
     if (event.shiftKey) this.regUp();
 
-    // if (event.shiftKey && event.altKey) this.langChang();
+    if (event.shiftKey && event.altKey) this.langChange();
 
     this.textArea.focus();
     this.symbol = '';
