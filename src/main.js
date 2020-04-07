@@ -57,7 +57,7 @@ class KeyBoard {
     document.body.append(wrapper);
 
     this.textArea.classList.add('keyboard__textarea');
-    this.textArea.innerHTML = 'Tested on macOs';
+    this.textArea.innerHTML = 'Tested on macOs \nChange lang - shift + alt';
     wrapper.append(this.textArea);
 
     this.pageLangBtn.classList.add('keyboard__langBtn', 'lang');
