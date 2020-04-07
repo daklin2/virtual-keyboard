@@ -1,5 +1,20 @@
 import keyboardKeys from './keyBoardKeys.js';
 
+const ignoreKeys = [
+  'Backspace',
+  'Delete',
+  'CapsLock',
+  'Control',
+  'Meta',
+  'Enter',
+  'Alt',
+  'Shift',
+  'ArrowRight',
+  'ArrowLeft',
+  'ArrowUp',
+  'ArrowDown',
+];
+
 class KeyBoard {
   constructor() {
     this.lang = 'en';
@@ -88,8 +103,9 @@ class KeyBoard {
         }
 
         // if !== '' then it's special symbol
-        if (keyValue[0] !== '') key.classList.add('key', `${keyValue[0]}`);
-        else key.classList.add('key');
+        const classOfKey = (keyValue[0] !== '') ? ['key', keyValue[0]] : ['key'];
+        key.classList.add(...classOfKey);
+
 
         keyboardRowContainer.append(key);
 
@@ -176,21 +192,7 @@ class KeyBoard {
 
     keyboardKeys.forEach((keyboardRowValues) => {
       keyboardRowValues.forEach((keyValue) => {
-        if (
-          keyValue[1] === event.code
-          && event.key !== 'Backspace'
-          && event.key !== 'Delete'
-          && event.key !== 'CapsLock'
-          && event.key !== 'Control'
-          && event.key !== 'Meta'
-          && event.key !== 'Enter'
-          && event.key !== 'Alt'
-          && event.key !== 'Shift'
-          && event.key !== 'ArrowRight'
-          && event.key !== 'ArrowLeft'
-          && event.key !== 'ArrowUp'
-          && event.key !== 'ArrowDown'
-        ) {
+        if (keyValue[1] === event.code && !ignoreKeys.includes(event.key)) {
           event.preventDefault();
           if (event.key === 'Tab') this.symbol = '  ';
           else {
