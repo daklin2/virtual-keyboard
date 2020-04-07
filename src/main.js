@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import keyboardKeys from './keyBoardKeys.js';
 
 const ignoreKeys = [
