@@ -158,8 +158,11 @@ class KeyBoard {
 
   // switch language
   langChange() {
-    if (this.lang === 'en') this.lang = 'ru';
-    else this.lang = 'en';
+    if (this.lang === 'en') {
+      this.lang = 'ru';
+    } else {
+      this.lang = 'en';
+    }
     localStorage.setItem('lang', this.lang);
 
     this.keyboard.querySelectorAll('.key').forEach((key) => {
@@ -186,7 +189,9 @@ class KeyBoard {
       this.changeRegister();
     }
 
-    if (event.shiftKey && event.altKey) this.langChange();
+    if (event.shiftKey && event.altKey) {
+      this.langChange();
+    }
 
     this.textArea.focus();
     this.symbol = '';
@@ -195,8 +200,9 @@ class KeyBoard {
       keyboardRowValues.forEach((keyValue) => {
         if (keyValue[1] === event.code && !ignoreKeys.includes(event.key)) {
           event.preventDefault();
-          if (event.key === 'Tab') this.symbol = '  ';
-          else {
+          if (event.key === 'Tab') {
+            this.symbol = '  ';
+          } else {
             const [, , ruLow, ruUp, enLow, enUp] = keyValue;
             switch (this.lang) {
               case 'en':
@@ -277,12 +283,18 @@ class KeyBoard {
             const [, , ruLow, ruUp, enLow, enUp] = keyValue;
             switch (this.lang) {
               case 'en':
-                if (this.isShiftPress || this.isCapsLockPress) this.symbol = enUp;
-                else this.symbol = enLow;
+                if (this.isShiftPress || this.isCapsLockPress) {
+                  this.symbol = enUp;
+                } else {
+                  this.symbol = enLow;
+                }
                 break;
               case 'ru':
-                if (this.isShiftPress || this.isCapsLockPress) this.symbol = ruUp;
-                else this.symbol = ruLow;
+                if (this.isShiftPress || this.isCapsLockPress) {
+                  this.symbol = ruUp;
+                } else {
+                  this.symbol = ruLow;
+                }
                 break;
               default:
                 break;
@@ -323,11 +335,21 @@ class KeyBoard {
 
       if (specialBtn === 'arrow') {
         const pos = this.textArea.selectionStart;
-        if (targetBtnName === 'ArrowUp') this.setCaretPosition(pos - this.textArea.value.length);
-        else if (targetBtnName === 'ArrowDown') this.setCaretPosition(pos + this.textArea.value.length);
-        else if (targetBtnName === 'ArrowRight') this.setCaretPosition(pos + 1);
-        else if (targetBtnName === 'ArrowLeft') {
-          if (this.textArea.selectionStart > 0) this.setCaretPosition(pos - 1);
+        switch (targetBtnName) {
+          case 'ArrowUp':
+            this.setCaretPosition(pos - this.textArea.value.length);
+            break;
+          case 'ArrowDown':
+            this.setCaretPosition(pos + this.textArea.value.length);
+            break;
+          case 'ArrowRight':
+            this.setCaretPosition(pos + 1);
+            break;
+          case 'ArrowLeft':
+            this.setCaretPosition(pos - 1);
+            break;
+          default:
+            break;
         }
       }
 
